@@ -5,6 +5,13 @@ namespace SpriteKind {
     export const Boss = SpriteKind.create()
     export const Food2 = SpriteKind.create()
 }
+function GoblinGun_Function () {
+	
+}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 2`, function (sprite9, location6) {
+    Dwra = 3
+    info.setScore(Dwra)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 5`, function (sprite, location) {
     Dwra = 5
     info.setScore(Dwra)
@@ -30,25 +37,56 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         `, Agios_Basilhs, 150, 0)
 })
-sprites.onOverlap(SpriteKind.Boss, SpriteKind.Player, function (sprite, otherSprite) {
-    pause(500)
-    info.changeLifeBy(-1)
-    music.playMelody("A C C - - - - - ", 300)
-})
+function Agios_Basilhs_Functions () {
+    Agios_Basilhs = sprites.create(img`
+        ....................
+        ....1...............
+        ...112222222........
+        ....1..2222222......
+        .......d18d18d......
+        .......dddddddd.....
+        ......111ddd111.....
+        .....22111111222....
+        .....21111111112....
+        .....21111122212....
+        .....22222222222....
+        .....dd2222222dd....
+        .....dd2255522dd....
+        .......ff5f5ff......
+        .......2255522......
+        .......2222222......
+        .......22...22......
+        .......ff...ff......
+        .......ff...ff......
+        ....................
+        `, SpriteKind.Player)
+    tiles.placeOnRandomTile(Agios_Basilhs, assets.tile`myTile10`)
+    for (let value of tiles.getTilesByType(assets.tile`myTile10`)) {
+        tiles.setTileAt(value, assets.tile`myTile10`)
+    }
+    controller.moveSprite(Agios_Basilhs, 100, 0)
+    Agios_Basilhs.ay = 300
+    scene.cameraFollowSprite(Agios_Basilhs)
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Agios_Basilhs.vy == 0) {
         Agios_Basilhs.vy = -140
     }
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
-    game.over(false, effects.melt)
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile30`, function (sprite17, location11) {
+    if (info.score() == 5) {
+        LEVEL3()
+    } else {
+        Agios_Basilhs.sayText("You havent left all the gifts")
+    }
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Boss, function (sprite, otherSprite) {
-    BOSS.destroy(effects.fire, 500)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite12, otherSprite4) {
+    info.changeLifeBy(1)
+    Life_1.destroy(effects.bubbles, 500)
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 1`, function (sprite, location) {
-    Dwra = 2
-    info.setScore(Dwra)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food2, function (sprite14, otherSprite5) {
+    info.changeLifeBy(2)
+    Life_2.destroy(effects.bubbles, 500)
 })
 function LEVEL1 () {
     info.setLife(10)
@@ -201,37 +239,24 @@ function LEVEL1 () {
     Fruit1_Function()
     Fruit2_Function()
 }
-function Fruit2_Function () {
-    Life_2 = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . 2 2 . . . 2 2 . . . . . 
-        . . . 2 2 2 2 . 2 2 2 2 . . . . 
-        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-        . . . 2 2 2 2 2 2 2 2 2 . . . . 
-        . . . . 2 2 2 2 2 2 2 . . . . . 
-        . . . . . 2 2 2 2 2 . . . . . . 
-        . . . . . . 2 2 2 . . . . . . . 
-        . . . . . . . 2 . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, SpriteKind.Food2)
-    tiles.placeOnRandomTile(Life_2, assets.tile`myTile41`)
-}
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite6, otherSprite3) {
     pause(500)
     info.changeLifeBy(-1)
     music.playMelody("A C C - - - - - ", 300)
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 3`, function (sprite, location) {
-    Dwra = 4
-    info.setScore(Dwra)
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile8`, function (sprite8, location5) {
+    music.playMelody("C5 B A G F E D C ", 200)
+    game.over(false, effects.melt)
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile8`, function (sprite, location) {
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite15, otherSprite6) {
+    kakos.destroy(effects.warmRadial, 500)
+})
+sprites.onOverlap(SpriteKind.Boss, SpriteKind.Player, function (sprite2, otherSprite) {
+    pause(500)
+    info.changeLifeBy(-1)
+    music.playMelody("A C C - - - - - ", 300)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile5`, function (sprite10, location7) {
     music.playMelody("C5 B A G F E D C ", 200)
     game.over(false, effects.melt)
 })
@@ -421,59 +446,59 @@ function LEVEL2 () {
     Fruit1_Function()
     Fruit2_Function()
 }
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 2`, function (sprite, location) {
-    Dwra = 3
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile27`, function (sprite13, location9) {
+    tiles.placeOnRandomTile(Agios_Basilhs, assets.tile`myTile28`)
+})
+function Fruit2_Function () {
+    Life_2 = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . 5 5 . . . 5 5 . . . . . 
+        . . . 5 5 5 5 . 5 5 5 5 . . . . 
+        . . 5 5 5 5 5 5 5 5 5 5 5 . . . 
+        . . 5 5 5 5 5 5 5 5 5 5 5 . . . 
+        . . 5 5 5 5 5 5 5 5 5 5 5 . . . 
+        . . 5 5 5 5 5 5 5 5 5 5 5 . . . 
+        . . . 5 5 5 5 5 5 5 5 5 . . . . 
+        . . . . 5 5 5 5 5 5 5 . . . . . 
+        . . . . . 5 5 5 5 5 . . . . . . 
+        . . . . . . 5 5 5 . . . . . . . 
+        . . . . . . . 5 . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Food2)
+    tiles.placeOnRandomTile(Life_2, assets.tile`myTile41`)
+}
+function Fruit1_Function () {
+    Life_1 = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . 2 2 . . . 2 2 . . . . . 
+        . . . 2 2 2 2 . 2 2 2 2 . . . . 
+        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
+        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
+        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
+        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
+        . . . 2 2 2 2 2 2 2 2 2 . . . . 
+        . . . . 2 2 2 2 2 2 2 . . . . . 
+        . . . . . 2 2 2 2 2 . . . . . . 
+        . . . . . . 2 2 2 . . . . . . . 
+        . . . . . . . 2 . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . 2 
+        `, SpriteKind.Food)
+    tiles.placeOnRandomTile(Life_1, assets.tile`myTile39`)
+}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 1`, function (sprite5, location3) {
+    Dwra = 2
     info.setScore(Dwra)
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile5`, function (sprite, location) {
-    music.playMelody("C5 B A G F E D C ", 200)
-    game.over(false, effects.melt)
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 0`, function (sprite, location) {
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 0`, function (sprite11, location8) {
     Dwra = 1
     info.setScore(Dwra)
 })
-function Agios_Basilhs_Functions () {
-    Agios_Basilhs = sprites.create(img`
-        ....................
-        ....1...............
-        ...112222222........
-        ....1..2222222......
-        .......d18d18d......
-        .......dddddddd.....
-        ......111ddd111.....
-        .....22111111222....
-        .....21111111112....
-        .....21111122212....
-        .....22222222222....
-        .....dd2222222dd....
-        .....dd2255522dd....
-        .......ff5f5ff......
-        .......2255522......
-        .......2222222......
-        .......22...22......
-        .......ff...ff......
-        .......ff...ff......
-        ....................
-        `, SpriteKind.Player)
-    tiles.placeOnRandomTile(Agios_Basilhs, assets.tile`myTile10`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile10`)) {
-        tiles.setTileAt(value, assets.tile`myTile10`)
-    }
-    controller.moveSprite(Agios_Basilhs, 100, 0)
-    Agios_Basilhs.ay = 300
-    scene.cameraFollowSprite(Agios_Basilhs)
-}
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    info.changeLifeBy(1)
-    Life_1.destroy(effects.bubbles, 500)
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile27`, function (sprite, location) {
-    tiles.placeOnRandomTile(Agios_Basilhs, assets.tile`myTile28`)
-})
-function GoblinGun_Function () {
-	
-}
 function LEVEL3 () {
     scene.setBackgroundImage(img`
         5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
@@ -600,54 +625,29 @@ function LEVEL3 () {
     tiles.setTilemap(tilemap`level5`)
     Agios_Basilhs_Functions()
 }
-function Fruit1_Function () {
-    Life_1 = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . 2 2 . . . 2 2 . . . . . 
-        . . . 2 2 2 2 . 2 2 2 2 . . . . 
-        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-        . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-        . . . 2 2 2 2 2 2 2 2 2 . . . . 
-        . . . . 2 2 2 2 2 2 2 . . . . . 
-        . . . . . 2 2 2 2 2 . . . . . . 
-        . . . . . . 2 2 2 . . . . . . . 
-        . . . . . . . 2 . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . 2 
-        `, SpriteKind.Food)
-    tiles.placeOnRandomTile(Life_1, assets.tile`myTile39`)
-}
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Food2, function (sprite, otherSprite) {
-    info.changeLifeBy(1)
-    Life_2.destroy(effects.bubbles, 500)
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite3, location2) {
+    game.over(false, effects.melt)
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    kakos.destroy(effects.warmRadial, 500)
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Boss, function (sprite4, otherSprite2) {
+    BOSS.destroy(effects.fire, 500)
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile14`, function (sprite, location) {
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Kaminada 3`, function (sprite7, location4) {
+    Dwra = 4
+    info.setScore(Dwra)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile14`, function (sprite16, location10) {
     tiles.placeOnRandomTile(kakos, assets.tile`myTile14`)
     kakos.follow(Agios_Basilhs, 50)
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile30`, function (sprite, location) {
-    if (info.score() == 5) {
-        game.over(true, effects.confetti)
-    } else {
-        Agios_Basilhs.sayText("You havent left all the gifts")
-    }
-})
-let Life_1: Sprite = null
-let Life_2: Sprite = null
-let kakos: Sprite = null
 let BOSS: Sprite = null
+let kakos: Sprite = null
+let Life_2: Sprite = null
+let Life_1: Sprite = null
 let Agios_Basilhs: Sprite = null
 let Fireball: Sprite = null
 let Dwra = 0
-Dwra = 0
 let lEVEL = 0
+Dwra = 0
 game.splash("Operation Santa")
 game.showLongText("The game was made by Crappy Games ", DialogLayout.Bottom)
 game.showLongText("Programmers: Manolis Kotsifas and Fotis Grammoutiannos", DialogLayout.Bottom)
